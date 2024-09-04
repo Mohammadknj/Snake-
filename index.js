@@ -28,68 +28,68 @@ let head = houses[6][4];
 let tail = houses[6][2];
 let Row = 6,
    Col = 4;
-console.log(head)
-console.log(tail)
-function checkFinished(){
-   if(Row==10||Col==10||Row==-1||Col==-1){
-      continuing = false
+function checkFinished() {
+   if (Row == 9 || Col == 9 || Row == 0 || Col == 0) {
+      console.log("nfj");
+      continuing = false;
    }
+   // return true;
 }
 function go() {
-   body[0].classList = "circle";
-   if (goingType == "Right") {Col++
-      houses[Row][Col].classList = "head";
-   } else if (goingType == "Left") {Col--
-      houses[Row][Col].classList = "head";
-   } else if (goingType == "Up") {Row--
-      houses[Row][Col].classList = "head";
-   } else if (goingType == "Down") {Row++
-      houses[Row][Col].classList = "head";
-   }
-   body.unshift(houses[Row][Col]);
-   head = body[0];
-   tail = body.pop();
-   tail.classList = "";
-   tail = body[body.length - 1];
-   checkFinished()
-}
-
-//go()
-// function findHead() {
-//    let Row, Col;
-//    for (let i = 0; i < 10; i++) {
-//       for (let j = 0; j < 10; j++) {
-//          if (houses[i][j] == body[0]) {
-//             Row = i;
-//             Col = j;
-//             return [Row, Col];
-//          }
-//       }
-//    }
-// }
-function goUp() {
-   if (goingType == "Right" || goingType == "Left") {
-      //let [Row, Col] = findHead();
+   if (continuing) {
       body[0].classList = "circle";
-      houses[Row - 1][Col].classList = "head";
-      houses[Row - 1][Col].style.backgroundImage =
-         "url(Pictures/SnakeHeadUp.png)";
-      body.unshift(houses[Row - 1][Col]);
-      Row--;
+      if (goingType == "Right") {
+         Col++;
+         houses[Row][Col].classList = "head";
+      } else if (goingType == "Left") {
+         Col--;
+         houses[Row][Col].classList = "head";
+      } else if (goingType == "Up") {
+         Row--;
+         houses[Row][Col].classList = "head";
+      } else if (goingType == "Down") {
+         Row++;
+         houses[Row][Col].classList = "head";
+      }
+      body.unshift(houses[Row][Col]);
+      head = body[0];
+      head.style.backgroundImage =
+         `url(Pictures/SnakeHead${goingType}.png)`;
       tail = body.pop();
       tail.classList = "";
+      tail = body[body.length - 1];
+      checkFinished();
+      if (continuing) {
+         cnt = 1;
+         setTimeout(() => {
+            go();
+         }, seconds[secondsCounter] * cnt);
+         cnt++;
+      }
+   }
+}
+go();
+function goUp() {
+   if (goingType == "Right" || goingType == "Left") {
+      // //body[0].classList = "circle";
+      // //houses[Row - 1][Col].classList = "head";
+      // head.style.backgroundImage =
+      //    "url(Pictures/SnakeHeadUp.png)";
+      // //body.unshift(houses[Row - 1][Col]);
+      // // Row--;
+      // //tail = body.pop();
+      // //tail.classList = "";
       goingType = "Up";
    }
 }
 function goRight() {
    if (goingType == "Up" || goingType == "Down") {
-      let [Row, Col] = findHead();
       body[0].classList = "circle";
       houses[Row][Col + 1].classList = "head";
       houses[Row][Col + 1].style.backgroundImage =
          "url(Pictures/SnakeHeadRight.png)";
-      body.unshift(houses[Row - 1][Col]);
-      Col++;
+      body.unshift(houses[Row][Col + 1]);
+      // Col++;
       tail = body.pop();
       tail.classList = "";
       goingType = "Right";
@@ -98,7 +98,7 @@ function goRight() {
 document.addEventListener("keydown", (key) => {
    if (continuing) {
       if (key.code == "ArrowUp") {
-         continuing = false
+         goUp();
       } else if (key.code == "ArrowDown") {
          goDown();
       } else if (key.code == "ArrowLeft") {
@@ -106,16 +106,17 @@ document.addEventListener("keydown", (key) => {
       } else if (key.code == "ArrowRight") {
          goRight();
       }
-      go();
+      //go();
    }
 });
-cnt = 1;
-while (continuing) {
-   setTimeout(() => {
-      go();
-   }, seconds[secondsCounter] * cnt);
-   cnt++;
-   if(cnt==10000){
-      break
-   }
-}
+// while (continuing) {
+//    // for (;;) {
+//    cnt = 1;
+//    setTimeout(() => {
+//       go();
+//    }, seconds[secondsCounter] * cnt);
+//    cnt++;
+//    // checkFinished()
+//    if (cnt==100000) break;
+// }
+// //}

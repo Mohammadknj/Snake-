@@ -28,7 +28,7 @@ td {
    border-radius: 35px;
 }
 .head {
-   background-image: url(Pictures/SnakeHeadRight.png);
+   /* background-image: url(Pictures/SnakeHeadRight.png); */
    background-size: cover;
    background-position: center;
 }
