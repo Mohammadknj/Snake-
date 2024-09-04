@@ -79,6 +79,7 @@ function goUp() {
       }
       body[0].classList = "circle";
       houses[Row-1][Col].classList = "head";
+      houses[Row-1][Col].style.backgroundImage='url(Pictures/SnakeHeadUp.png)'
       body.unshift(houses[Row-1][Col]);
       Row--;
       let tail = body.pop();
