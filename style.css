@@ -1,0 +1,42 @@
+body {
+   display: flex;
+   justify-content: center;
+   margin: 0;
+   text-align: center;
+   font-family: Arial;
+   align-items: center;
+}
+.score{
+   width: 20%;
+   font-size: 40px;
+   margin-left: 50px;
+}
+table {
+   background-color: black;
+   border: none;
+   padding: 0;
+   margin: 0;
+}
+td {
+   width: 70px;
+   height: 70px;
+   padding: 0;
+   margin: 0;
+}
+.circle {
+   background-color: #3fa93f;
+   border-radius: 35px;
+}
+.headr {
+   background-color: #3fa93f;
+   border-radius: 35px;
+}
+.head {
+   background-image: url(Pictures/SnakeHeadRight.png);
+   background-size: cover;
+   background-position: center;
+}
+.food{
+   background-color: #ffc321;
+   border-radius: 35px;
+}
