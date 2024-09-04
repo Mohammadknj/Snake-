@@ -12,31 +12,31 @@ for (let i = 0; i < 10; i++) {
    }
 }
 let body = [houses[6][4], houses[6][3], houses[6][2]];
+let foodRow, foodCol;
 function setFood() {
    while (true) {
-      let randomRow = Math.floor(Math.random() * 10);
-      let randomCol = Math.floor(Math.random() * 10);
-      //console.log(randomRow + " " + randomCol);
-      if (houses[randomRow][randomCol].classList == "") {
-         houses[randomRow][randomCol].classList = "food";
+      foodRow = Math.floor(Math.random() * 10);
+      foodCol = Math.floor(Math.random() * 10);
+      if (houses[foodRow][foodCol].classList == "") {
+         houses[foodRow][foodCol].classList = "food";
          break;
       }
    }
 }
 setFood();
+let score = document.querySelector(".score > h2");
 let head = houses[6][4];
 let tail = houses[6][2];
 let Row = 6,
    Col = 4;
 function checkFinished() {
    if (Row == 9 || Col == 9 || Row == 0 || Col == 0) {
-      console.log("nfj");
       continuing = false;
    }
-   // return true;
 }
 function go() {
    if (continuing) {
+      head.style.backgroundImage = "";
       body[0].classList = "circle";
       if (goingType == "Right") {
          Col++;
@@ -53,11 +53,16 @@ function go() {
       }
       body.unshift(houses[Row][Col]);
       head = body[0];
-      head.style.backgroundImage =
-         `url(Pictures/SnakeHead${goingType}.png)`;
+      head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
+      if (Row == foodRow && Col == foodCol) {
+         score.innerHTML++;
+         setFood();
+         secondsCounter = Math.floor(Number(score.innerHTML/5))
+      }else{
       tail = body.pop();
       tail.classList = "";
       tail = body[body.length - 1];
+      }
       checkFinished();
       if (continuing) {
          cnt = 1;
@@ -69,30 +74,32 @@ function go() {
    }
 }
 go();
+function lose(){
+   continuing = false
+   head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
+}
 function goUp() {
    if (goingType == "Right" || goingType == "Left") {
-      // //body[0].classList = "circle";
-      // //houses[Row - 1][Col].classList = "head";
-      // head.style.backgroundImage =
-      //    "url(Pictures/SnakeHeadUp.png)";
-      // //body.unshift(houses[Row - 1][Col]);
-      // // Row--;
-      // //tail = body.pop();
-      // //tail.classList = "";
       goingType = "Up";
+      if(houses[Row-1][Col].classList=='circle') lose()
    }
 }
 function goRight() {
    if (goingType == "Up" || goingType == "Down") {
-      body[0].classList = "circle";
-      houses[Row][Col + 1].classList = "head";
-      houses[Row][Col + 1].style.backgroundImage =
-         "url(Pictures/SnakeHeadRight.png)";
-      body.unshift(houses[Row][Col + 1]);
-      // Col++;
-      tail = body.pop();
-      tail.classList = "";
       goingType = "Right";
+      if(houses[Row][Col+1].classList=='circle') lose()
+   }
+}
+function goDown() {
+   if (goingType == "Right" || goingType == "Left") {
+      goingType = "Down";
+      if(houses[Row+1][Col].classList=='circle') lose()
+   }
+}
+function goLeft() {
+   if (goingType == "Up" || goingType == "Down") {
+      goingType = "Left";
+      if(houses[Row][Col-1].classList=='circle') lose()
    }
 }
 document.addEventListener("keydown", (key) => {
@@ -106,7 +113,6 @@ document.addEventListener("keydown", (key) => {
       } else if (key.code == "ArrowRight") {
          goRight();
       }
-      //go();
    }
 });
 // while (continuing) {
