@@ -57,50 +57,96 @@ function go() {
       if (Row == foodRow && Col == foodCol) {
          score.innerHTML++;
          setFood();
-         secondsCounter = Math.floor(Number(score.innerHTML/5))
-      }else{
-      tail = body.pop();
-      tail.classList = "";
-      tail = body[body.length - 1];
+         secondsCounter = Math.floor(Number(score.innerHTML / 5));
+      } else {
+         tail = body.pop();
+         tail.classList = "";
+         tail = body[body.length - 1];
       }
       checkFinished();
       if (continuing) {
          cnt = 1;
          setTimeout(() => {
+            //if (saved != "") goingType = saved;
             go();
+            //saved = "";
          }, seconds[secondsCounter] * cnt);
          cnt++;
       }
    }
 }
 go();
-function lose(){
-   continuing = false
-   head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
+function lose() {
+   if (houses[Row - 1][Col] != body[0]) {
+      continuing = false;
+      head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
+   }
 }
+let goingTypeChanged = false;
+let saved = "";
 function goUp() {
    if (goingType == "Right" || goingType == "Left") {
-      goingType = "Up";
-      if(houses[Row-1][Col].classList=='circle') lose()
+      if (!goingTypeChanged) {
+         goingType = "Up";
+         //if (houses[Row - 1][Col].classList == "circle") lose();
+         goingTypeChanged = true;
+         falser();
+      }else saved = "Up";
+      // setTimeout(() => {
+      // goingTypeChanged = false;
+      // }, seconds[secondsCounter]);
+      // } 
    }
 }
 function goRight() {
    if (goingType == "Up" || goingType == "Down") {
-      goingType = "Right";
-      if(houses[Row][Col+1].classList=='circle') lose()
+      if (!goingTypeChanged) {
+         goingType = "Right";
+         //if (houses[Row][Col + 1].classList == "circle") lose();
+         goingTypeChanged = true;
+         falser();
+      }else saved = "Right";
+      // setTimeout(() => {
+      // goingTypeChanged = false;
+      // }, seconds[secondsCounter]);
+      // } 
    }
 }
 function goDown() {
    if (goingType == "Right" || goingType == "Left") {
-      goingType = "Down";
-      if(houses[Row+1][Col].classList=='circle') lose()
+      if (!goingTypeChanged) {
+         goingType = "Down";
+         //if (houses[Row + 1][Col].classList == "circle") lose();
+         goingTypeChanged = true;
+         falser();
+      }else saved = "Down";
+      //setTimeout(() => {
+      //   goingTypeChanged = false;
+      //}, seconds[secondsCounter]);
+      //} 
    }
 }
 function goLeft() {
    if (goingType == "Up" || goingType == "Down") {
-      goingType = "Left";
-      if(houses[Row][Col-1].classList=='circle') lose()
+      if (!goingTypeChanged) {
+         goingType = "Left";
+         //if (houses[Row][Col - 1].classList == "circle") lose();
+         goingTypeChanged = true;
+         falser();
+      }else saved = "Left";
+      //setTimeout(() => {
+      //   goingTypeChanged = false;
+      //}, seconds[secondsCounter]);
+      //} 
    }
+}
+function falser() {
+   setTimeout(() => {
+      goingTypeChanged = false;
+      if(saved!='')
+      goingType = saved
+      saved = ''
+   }, seconds[secondsCounter]);
 }
 document.addEventListener("keydown", (key) => {
    if (continuing) {
@@ -113,6 +159,7 @@ document.addEventListener("keydown", (key) => {
       } else if (key.code == "ArrowRight") {
          goRight();
       }
+      // changed =
    }
 });
 // while (continuing) {
