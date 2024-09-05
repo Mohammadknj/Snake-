@@ -1,7 +1,7 @@
 let cells = document.querySelectorAll("td");
 let goingType = "Right";
 let continuing = true;
-let seconds = [1000, 900, 800, 700, 600, 500, 400, 300, 200, 100];
+let seconds = [800, 700, 600, 500, 400, 300, 200, 100];
 let secondsCounter = 0;
 let cnt = 0;
 let houses = [[], [], [], [], [], [], [], [], [], []];
@@ -34,6 +34,7 @@ let Row = 6,
 function checkFinished() {
    if (Row == 9 || Col == 9 || Row == 0 || Col == 0) {
       continuing = false;
+      ShowMessage();
    }
 }
 function go() {
@@ -70,8 +71,14 @@ function go() {
       head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
       if (Row == foodRow && Col == foodCol) {
          score.innerHTML++;
+         if (score.innerHTML == 78) {
+            win();
+            return;
+         }
          setFood();
-         secondsCounter = Math.floor(Number(score.innerHTML / 5));
+         if (score.innerHTML < 35)
+            secondsCounter = Math.floor(Number(score.innerHTML / 5));
+         else secondsCounter = 7;
       } else {
          tail = body.pop();
          tail.classList = "";
@@ -88,9 +95,23 @@ function go() {
    }
 }
 go();
+function ShowMessage() {
+   setTimeout(() => {
+      document.querySelector(".blacker").style.display = "inline-block";
+      document.querySelector(".message").style.display = "flex";
+   }, 1000);
+}
 function lose() {
    continuing = false;
    head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
+   ShowMessage();
+}
+function win() {
+   continuing = false;
+   document.querySelector(".message > h1").innerHTML = "Hooora!!";
+   document.querySelector(".message > h2").innerHTML =
+      "Congratulation, Nobody can reach this level.<br> Try again?";
+   ShowMessage();
 }
 let goingTypeChanged = false;
 let saved = "";
@@ -149,4 +170,9 @@ document.addEventListener("keydown", (key) => {
          goRight();
       }
    }
+});
+document.getElementById("Retry").addEventListener("click", () => {
+   setTimeout(() => {
+      location.reload();
+   }, 500);
 });
