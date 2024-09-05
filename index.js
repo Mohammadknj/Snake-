@@ -31,34 +31,44 @@ let head = houses[6][4];
 let tail = houses[6][2];
 let Row = 6,
    Col = 4;
-function checkFinished() {
-   if (Row == 9 || Col == 9 || Row == 0 || Col == 0) {
-      continuing = false;
-      ShowMessage();
-   }
-}
 function go() {
    if (continuing) {
       if (goingType == "Right") {
          Col++;
+         if (Col == 10) {
+            lose();
+            return;
+         }
          if (houses[Row][Col].classList == "circle") {
             lose();
             return;
          } else houses[Row][Col].classList = "head";
       } else if (goingType == "Left") {
          Col--;
+         if (Col == -1) {
+            lose();
+            return;
+         }
          if (houses[Row][Col].classList == "circle") {
             lose();
             return;
          } else houses[Row][Col].classList = "head";
       } else if (goingType == "Up") {
          Row--;
+         if (Col == -1) {
+            lose();
+            return;
+         }
          if (houses[Row][Col].classList == "circle") {
             lose();
             return;
          } else houses[Row][Col].classList = "head";
       } else if (goingType == "Down") {
          Row++;
+         if (Row == 10) {
+            lose();
+            return;
+         }
          if (houses[Row][Col].classList == "circle") {
             lose();
             return;
@@ -84,7 +94,6 @@ function go() {
          tail.classList = "";
          tail = body[body.length - 1];
       }
-      checkFinished();
       if (continuing) {
          cnt = 1;
          setTimeout(() => {

@@ -16,6 +16,7 @@ table {
    border: none;
    padding: 0;
    margin: 0;
+   border:solid 5px red;
 }
 td {
    width: 70px;
