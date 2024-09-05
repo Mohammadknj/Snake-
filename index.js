@@ -17,9 +17,11 @@ function setFood() {
    while (true) {
       foodRow = Math.floor(Math.random() * 10);
       foodCol = Math.floor(Math.random() * 10);
-      if (houses[foodRow][foodCol].classList == "") {
-         houses[foodRow][foodCol].classList = "food";
-         break;
+      if (foodRow > 0 && foodRow < 9 && foodCol > 0 && foodCol < 9) {
+         if (houses[foodRow][foodCol].classList == "") {
+            houses[foodRow][foodCol].classList = "food";
+            break;
+         }
       }
    }
 }
@@ -36,21 +38,33 @@ function checkFinished() {
 }
 function go() {
    if (continuing) {
-      head.style.backgroundImage = "";
-      body[0].classList = "circle";
       if (goingType == "Right") {
          Col++;
-         houses[Row][Col].classList = "head";
+         if (houses[Row][Col].classList == "circle") {
+            lose();
+            return;
+         } else houses[Row][Col].classList = "head";
       } else if (goingType == "Left") {
          Col--;
-         houses[Row][Col].classList = "head";
+         if (houses[Row][Col].classList == "circle") {
+            lose();
+            return;
+         } else houses[Row][Col].classList = "head";
       } else if (goingType == "Up") {
          Row--;
-         houses[Row][Col].classList = "head";
+         if (houses[Row][Col].classList == "circle") {
+            lose();
+            return;
+         } else houses[Row][Col].classList = "head";
       } else if (goingType == "Down") {
          Row++;
-         houses[Row][Col].classList = "head";
+         if (houses[Row][Col].classList == "circle") {
+            lose();
+            return;
+         } else houses[Row][Col].classList = "head";
       }
+      head.style.backgroundImage = "";
+      body[0].classList = "circle";
       body.unshift(houses[Row][Col]);
       head = body[0];
       head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
@@ -67,9 +81,7 @@ function go() {
       if (continuing) {
          cnt = 1;
          setTimeout(() => {
-            //if (saved != "") goingType = saved;
             go();
-            //saved = "";
          }, seconds[secondsCounter] * cnt);
          cnt++;
       }
@@ -77,10 +89,8 @@ function go() {
 }
 go();
 function lose() {
-   if (houses[Row - 1][Col] != body[0]) {
-      continuing = false;
-      head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
-   }
+   continuing = false;
+   head.style.backgroundImage = `url(Pictures/SnakeHead${goingType}.png)`;
 }
 let goingTypeChanged = false;
 let saved = "";
@@ -88,64 +98,43 @@ function goUp() {
    if (goingType == "Right" || goingType == "Left") {
       if (!goingTypeChanged) {
          goingType = "Up";
-         //if (houses[Row - 1][Col].classList == "circle") lose();
          goingTypeChanged = true;
          falser();
-      }else saved = "Up";
-      // setTimeout(() => {
-      // goingTypeChanged = false;
-      // }, seconds[secondsCounter]);
-      // } 
+      } else saved = "Up";
    }
 }
 function goRight() {
    if (goingType == "Up" || goingType == "Down") {
       if (!goingTypeChanged) {
          goingType = "Right";
-         //if (houses[Row][Col + 1].classList == "circle") lose();
          goingTypeChanged = true;
          falser();
-      }else saved = "Right";
-      // setTimeout(() => {
-      // goingTypeChanged = false;
-      // }, seconds[secondsCounter]);
-      // } 
+      } else saved = "Right";
    }
 }
 function goDown() {
    if (goingType == "Right" || goingType == "Left") {
       if (!goingTypeChanged) {
          goingType = "Down";
-         //if (houses[Row + 1][Col].classList == "circle") lose();
          goingTypeChanged = true;
          falser();
-      }else saved = "Down";
-      //setTimeout(() => {
-      //   goingTypeChanged = false;
-      //}, seconds[secondsCounter]);
-      //} 
+      } else saved = "Down";
    }
 }
 function goLeft() {
    if (goingType == "Up" || goingType == "Down") {
       if (!goingTypeChanged) {
          goingType = "Left";
-         //if (houses[Row][Col - 1].classList == "circle") lose();
          goingTypeChanged = true;
          falser();
-      }else saved = "Left";
-      //setTimeout(() => {
-      //   goingTypeChanged = false;
-      //}, seconds[secondsCounter]);
-      //} 
+      } else saved = "Left";
    }
 }
 function falser() {
    setTimeout(() => {
       goingTypeChanged = false;
-      if(saved!='')
-      goingType = saved
-      saved = ''
+      if (saved != "") goingType = saved;
+      saved = "";
    }, seconds[secondsCounter]);
 }
 document.addEventListener("keydown", (key) => {
@@ -159,17 +148,5 @@ document.addEventListener("keydown", (key) => {
       } else if (key.code == "ArrowRight") {
          goRight();
       }
-      // changed =
    }
 });
-// while (continuing) {
-//    // for (;;) {
-//    cnt = 1;
-//    setTimeout(() => {
-//       go();
-//    }, seconds[secondsCounter] * cnt);
-//    cnt++;
-//    // checkFinished()
-//    if (cnt==100000) break;
-// }
-// //}
